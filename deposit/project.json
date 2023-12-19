@@ -1,0 +1,95 @@
+{
+  "name": "deposit",
+  "$schema": "../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "deposit/src",
+  "projectType": "application",
+  "targets": {
+    "build": {
+      "executor": "@nx/webpack:webpack",
+      "outputs": ["{options.outputPath}"],
+      "defaultConfiguration": "production",
+      "options": {
+        "compiler": "babel",
+        "outputPath": "dist/deposit",
+        "index": "deposit/src/index.html",
+        "baseHref": "/",
+        "main": "deposit/src/main.ts",
+        "tsConfig": "deposit/tsconfig.app.json",
+        "assets": ["deposit/src/favicon.ico", "deposit/src/assets"],
+        "styles": ["deposit/src/styles.css"],
+        "scripts": [],
+        "webpackConfig": "deposit/webpack.config.ts"
+      },
+      "configurations": {
+        "development": {
+          "extractLicenses": false,
+          "optimization": false,
+          "sourceMap": true,
+          "vendorChunk": true
+        },
+        "production": {
+          "fileReplacements": [
+            {
+              "replace": "deposit/src/environments/environment.ts",
+              "with": "deposit/src/environments/environment.prod.ts"
+            }
+          ],
+          "optimization": true,
+          "outputHashing": "all",
+          "sourceMap": false,
+          "namedChunks": false,
+          "extractLicenses": true,
+          "vendorChunk": false,
+          "webpackConfig": "deposit/webpack.config.prod.ts"
+        }
+      }
+    },
+    "serve": {
+      "executor": "@nx/react:module-federation-dev-server",
+      "defaultConfiguration": "development",
+      "options": {
+        "buildTarget": "deposit:build",
+        "hmr": true,
+        "port": 4202
+      },
+      "configurations": {
+        "development": {
+          "buildTarget": "deposit:build:development"
+        },
+        "production": {
+          "buildTarget": "deposit:build:production",
+          "hmr": false
+        }
+      }
+    },
+    "lint": {
+      "executor": "@nx/eslint:lint",
+      "outputs": ["{options.outputFile}"]
+    },
+    "serve-static": {
+      "executor": "@nx/web:file-server",
+      "defaultConfiguration": "production",
+      "options": {
+        "buildTarget": "deposit:build",
+        "watch": false,
+        "port": 4202
+      },
+      "configurations": {
+        "development": {
+          "buildTarget": "deposit:build:development"
+        },
+        "production": {
+          "buildTarget": "deposit:build:production"
+        }
+      }
+    },
+    "test": {
+      "executor": "@nx/jest:jest",
+      "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
+      "options": {
+        "jestConfig": "deposit/jest.config.ts"
+      }
+    }
+  },
+  "tags": []
+}

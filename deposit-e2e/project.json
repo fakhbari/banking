@@ -1,0 +1,30 @@
+{
+  "name": "deposit-e2e",
+  "$schema": "../node_modules/nx/schemas/project-schema.json",
+  "projectType": "application",
+  "sourceRoot": "deposit-e2e/src",
+  "targets": {
+    "e2e": {
+      "executor": "@nx/cypress:cypress",
+      "options": {
+        "cypressConfig": "deposit-e2e/cypress.config.ts",
+        "testingType": "e2e",
+        "devServerTarget": "deposit:serve"
+      },
+      "configurations": {
+        "production": {
+          "devServerTarget": "deposit:serve:production"
+        },
+        "ci": {
+          "devServerTarget": "deposit:serve-static"
+        }
+      }
+    },
+    "lint": {
+      "executor": "@nx/eslint:lint",
+      "outputs": ["{options.outputFile}"]
+    }
+  },
+  "implicitDependencies": ["deposit"],
+  "tags": []
+}

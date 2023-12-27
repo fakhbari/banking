@@ -16,7 +16,7 @@ import {
   Box,
   IconButton
 } from "@mui/material";
-import CustomerModal, {modalData} from "./Modal";
+import CustomerModal, {formData, modalData} from "./Modal";
 import {useState} from "react";
 
 interface customerType {
@@ -106,6 +106,7 @@ interface EnhancedTableToolbarProps {
   numSelected: number;
   selectedItem: any;
   onAddItem:()=>void;
+  onDeleteItem:(customerNumbers:number[])=>void;
 }
 
 function EnhancedTableToolbar(props: EnhancedTableToolbarProps) {
@@ -113,8 +114,8 @@ function EnhancedTableToolbar(props: EnhancedTableToolbarProps) {
   const AddIcon = Icons.AddCircle;
   const DeleteIcon = Icons.Delete;
 
-  const handleDeleteCustomer = (customerId:string) =>{
-    console.log('hello from customer deletion',customerId)
+  const handleDeleteCustomer = (customerNumbers:number[]) =>{
+    props.onDeleteItem(customerNumbers)
   }
 
   return (
@@ -174,7 +175,14 @@ function EnhancedTableToolbar(props: EnhancedTableToolbarProps) {
   );
 }
 
-export default function CustomerTable(props:{customers:customerType[]}) {
+interface customersType {
+  name:string,
+  family:string,
+  nationalCode:string,
+  customerNumber:number
+}
+
+export default function CustomerTable(props:{customers:customerType[],setCustomers:(customers:customersType[])=>void}) {
   const [selected, setSelected] = React.useState<readonly number[]>([]);
   const [modal, setModal]=useState<{isOpen:boolean,data:modalData }>({isOpen:false,data:{name:'',family:'',nationalCode:'',onSubmit:()=>{}}})
   let EditIcon = Icons.Edit;
@@ -188,12 +196,12 @@ export default function CustomerTable(props:{customers:customerType[]}) {
     setSelected([]);
   };
 
-  const handleClick = (event: React.MouseEvent<unknown>, id: number) => {
-    const selectedIndex = selected.indexOf(id);
+  const handleClick = (event: React.MouseEvent<unknown>, customerNumber: number) => {
+    const selectedIndex = selected.indexOf(customerNumber);
     let newSelected: readonly number[] = [];
 
     if (selectedIndex === -1) {
-      newSelected = newSelected.concat(selected, id);
+      newSelected = newSelected.concat(selected, customerNumber);
     } else if (selectedIndex === 0) {
       newSelected = newSelected.concat(selected.slice(1));
     } else if (selectedIndex === selected.length - 1) {
@@ -207,14 +215,29 @@ export default function CustomerTable(props:{customers:customerType[]}) {
     setSelected(newSelected);
   };
 
-  const isSelected = (id: number) => selected.indexOf(id) !== -1;
+  const isSelected = (customerNumber: number) => selected.indexOf(customerNumber) !== -1;
 
-  const submitModalAddHandler = ()=>{
-    console.log('hello from submit add')
-    let id = Math.floor(Math.random() * 1000) + 1;
+  const submitModalAddHandler = (formData:formData)=>{
+    const newCustomer = {
+      ...formData,
+      customerNumber:Math.floor(Math.random() * 1000) + 1
+    }
+    props.setCustomers([...props.customers,newCustomer])
   }
-  const submitModalEditHandler = ()=>{
-    console.log('hello from submit edit')
+  const submitModalEditHandler = (customerNumber:number,formData:formData)=>{
+    const updatedCustomers = props.customers.map(customer =>{
+      if(customer.customerNumber == customerNumber){
+        return{customerNumber,...formData}
+      }else {
+        return customer
+      }
+    })
+    props.setCustomers(updatedCustomers)
+  }
+  const handleDeleteItem= (customerNumbers:number[])=>{
+    const updatedCustomers = props.customers.filter(customer =>!customerNumbers.includes(customer.customerNumber))
+    props.setCustomers(updatedCustomers)
+    setSelected([])
   }
   return (
     <>
@@ -224,6 +247,7 @@ export default function CustomerTable(props:{customers:customerType[]}) {
             numSelected={selected.length}
             selectedItem={selected}
             onAddItem={()=>{setModal({isOpen: true,data: {name:'',family:'',nationalCode:'',onSubmit:submitModalAddHandler}})}}
+            onDeleteItem={handleDeleteItem}
           />
           <TableContainer>
             <Table sx={{minWidth: 750}} aria-labelledby="tableTitle">
@@ -233,8 +257,8 @@ export default function CustomerTable(props:{customers:customerType[]}) {
                 rowCount={props.customers.length}
               />
               <TableBody>
-                {props.customers.map((row, index) => {
-                  const isItemSelected = isSelected(row.customerNumber);
+                {props.customers && props.customers.map((customer, index) => {
+                  const isItemSelected = isSelected(customer.customerNumber);
                   const labelId = `enhanced-table-checkbox-${index}`;
 
                   return (
@@ -243,14 +267,14 @@ export default function CustomerTable(props:{customers:customerType[]}) {
                       role="checkbox"
                       aria-checked={isItemSelected}
                       tabIndex={-1}
-                      key={row.customerNumber}
+                      key={customer.customerNumber}
                       selected={isItemSelected}
                       sx={{cursor: "pointer"}}
                     >
                       <TableCell padding="checkbox">
                         <Checkbox
                           color="primary"
-                          onClick={(event) => handleClick(event, row.customerNumber)}
+                          onClick={(event) => handleClick(event, customer.customerNumber)}
                           checked={isItemSelected}
                           inputProps={{
                             "aria-labelledby": labelId,
@@ -264,21 +288,21 @@ export default function CustomerTable(props:{customers:customerType[]}) {
                         padding="none"
                         align="center"
                       >
-                        {row.customerNumber}
+                        {customer.customerNumber}
                       </TableCell>
-                      <TableCell align="center">{row.name}</TableCell>
-                      <TableCell align="center">{row.family}</TableCell>
-                      <TableCell align="center">{row.nationalCode}</TableCell>
+                      <TableCell align="center">{customer.name}</TableCell>
+                      <TableCell align="center">{customer.family}</TableCell>
+                      <TableCell align="center">{customer.nationalCode}</TableCell>
                       <TableCell align="center">
                         <EditIcon onClick={() => {
                           setModal(
                             {
                               isOpen: true,
                               data: {
-                                name:row.name,
-                                family:row.family,
-                                nationalCode:row.nationalCode,
-                                onSubmit:submitModalEditHandler,
+                                name:customer.name,
+                                family:customer.family,
+                                nationalCode:customer.nationalCode,
+                                onSubmit:(formData)=>{submitModalEditHandler(customer.customerNumber,formData)},
                               }
                             }
                           )

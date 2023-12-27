@@ -4,10 +4,10 @@ import {DataContext} from "@banking/data-context";
 import {useContext} from "react";
 
 const Customer = () => {
-  const {customers} = useContext(DataContext)
+  const {customers , setCustomers} = useContext(DataContext)
   return (
     <div>
-      { customers ? <CustomerTable customers={customers}/> : "no customer found ! "}
+      { customers ? <CustomerTable customers={customers} setCustomers={setCustomers}/> : "no customer found ! "}
     </div>
   );
 };

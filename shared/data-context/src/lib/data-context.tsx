@@ -10,8 +10,12 @@ export function DataProvider({ children }: SharedDataContextProps) {
     {customerNumber:2, name:"zahra", family:"gholizade", nationalCode:"987654321"},
     {customerNumber:3, name:"arman", family:"taherian", nationalCode:"543219876"},
   ]);
+  const [deposits, setDeposits] = useState([
+    {depositNumber:'1000',customerNumber:'1',amount:'1500'},
+    {depositNumber:'2000',customerNumber:'2',amount:'2500'},
+  ])
   return (
-    <DataContext.Provider value={{ customers, setCustomers }}>
+    <DataContext.Provider value={{ customers, setCustomers,deposits, setDeposits }}>
       {children}
     </DataContext.Provider>
   );

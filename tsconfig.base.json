@@ -15,6 +15,7 @@
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
+      "@banking/data-context": ["shared/data-context/src/index.ts"],
       "customer/Module": ["customer/src/remote-entry.ts"],
       "deposit/Module": ["deposit/src/remote-entry.ts"],
       "facilities/Module": ["facilities/src/remote-entry.ts"]

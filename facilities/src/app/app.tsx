@@ -1,11 +1,10 @@
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-import styles from './app.module.css';
+import React from 'react';
+import CustomizedTables from "./components/Table";
 
-
-export function App() {
+function App() {
   return (
-    <div>
-      Hello from facilities
+    <div className="app">
+      <CustomizedTables />
     </div>
   );
 }

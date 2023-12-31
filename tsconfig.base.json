@@ -18,7 +18,8 @@
       "@banking/data-context": ["shared/data-context/src/index.ts"],
       "customer/Module": ["customer/src/remote-entry.ts"],
       "deposit/Module": ["deposit/src/remote-entry.ts"],
-      "facilities/Module": ["facilities/src/remote-entry.ts"]
+      "facilities/Module": ["facilities/src/remote-entry.ts"],
+      "installment/Module": ["installment/src/remote-entry.ts"]
     }
   },
   "exclude": ["node_modules", "tmp"]

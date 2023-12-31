@@ -16,6 +16,7 @@ import {useContext, useEffect} from "react";
 import {DataContext} from "@banking/data-context";
 
 export interface facilityInfoType {
+  id:string;
   depositNumber:string;
   customerNumber:string;
   facilityAmount:number;
@@ -36,7 +37,7 @@ interface depositType {
 export default function FacilitiesModal(props:IProps) {
   const [open, setOpen] = React.useState(false);
   const [deposit, setDeposit] = React.useState('');
-  const [facilityInfo , setFacilityInfo] = React.useState<facilityInfoType>({depositNumber:'',customerNumber:'', facilityAmount:0})
+  const [facilityInfo , setFacilityInfo] = React.useState<facilityInfoType>({id:'',depositNumber:'',customerNumber:'', facilityAmount:0})
   const {deposits } = useContext(DataContext)
 
   const handleOpen = () => setOpen(true);
@@ -50,6 +51,7 @@ export default function FacilitiesModal(props:IProps) {
     setDeposit(selectedDepositNumber)
     const selectedDeposit = deposits.find((deposit:depositType) => deposit.depositNumber == selectedDepositNumber)
     setFacilityInfo({
+      id:'FA-'.concat(selectedDepositNumber),
       depositNumber:selectedDepositNumber,
       customerNumber:selectedDeposit.customerNumber,
       facilityAmount: Number(selectedDeposit.amount)* 0.7
@@ -67,7 +69,7 @@ export default function FacilitiesModal(props:IProps) {
   const onSubmitData = () =>{
     props.handleSubmit(facilityInfo)
     setDeposit('')
-    setFacilityInfo({depositNumber:'',customerNumber:'', facilityAmount:0})
+    setFacilityInfo({id:'',depositNumber:'',customerNumber:'', facilityAmount:0})
     handleClose();
   }
 

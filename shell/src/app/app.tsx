@@ -28,6 +28,7 @@ import styles from "./app.module.css"
 const Customer = React.lazy(() => import('customer/Module'));
 const Deposit = React.lazy(() => import('deposit/Module'));
 const Facilities = React.lazy(() => import('facilities/Module'));
+const Installment = React.lazy(() => import('installment/Module'));
 
 export function App() {
   const [open, setOpen] = React.useState(true);
@@ -123,6 +124,14 @@ export function App() {
                 <ListItemText primary="Facilities"/>
               </ListItemButton>
             </RouterLink>
+            <RouterLink to="/installment" className={styles.MenuLinks}>
+              <ListItemButton>
+                <ListItemIcon>
+                  <FacilitiesIcon/>
+                </ListItemIcon>
+                <ListItemText primary="Installment"/>
+              </ListItemButton>
+            </RouterLink>
           </List>
         </Drawer>
         <Box
@@ -150,6 +159,8 @@ export function App() {
                     <Route path="/deposit" element={<Deposit />} />
 
                     <Route path="/facilities" element={<Facilities />} />
+
+                    <Route path="/installment" element={<Installment />} />
                   </Routes>
                 </React.Suspense>
               </Paper>

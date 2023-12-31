@@ -15,25 +15,30 @@ import {
 } from "@mui/material";
 import * as Icons from "@mui/icons-material";
 import styles from "./Table.module.css";
-import FacilitiesModal, {facilityInfoType} from "./Modal";
+import InstallmentModal, {installmentInfo} from "./Modal";
 import {DataContext} from "@banking/data-context";
 
-interface facilityType {
-  id:string,
-  depositNumber: string,
-  customerNumber: string,
-  facilityAmount: string,
+
+export interface installmentType {
+  facilityId:string,
+  loanNumber:number,
+  loanAmount:number
 }
 
 export default function CustomizedTables() {
   const [open, setOpen] = React.useState(false)
   const AddIcon = Icons.Add
-  const {facilities , setFacilities} = React.useContext(DataContext)
+  const {installment , setInstallment} = React.useContext(DataContext)
 
-  const handleAddFacility = (facilityInfo:facilityInfoType) =>{
-    console.log('facilityInfo from table>>',facilityInfo)
+  const handleAddFacility = (installmentInfo:installmentInfo) =>{
+    const loanAmount = installmentInfo.facility.facilityAmount / installmentInfo.installmentCount
+    const newInstallment:installmentType[] = []
+    for(let i=1 ; i <= installmentInfo.installmentCount ; i++){
+      newInstallment.push({facilityId:installmentInfo.facility.id , loanNumber:i , loanAmount:loanAmount})
+    }
+    console.log('newInstallment',newInstallment)
 
-    setFacilities([...facilities,facilityInfo])
+    setInstallment([...installment,...newInstallment])
   }
 
   return (
@@ -47,7 +52,7 @@ export default function CustomizedTables() {
               id="tableTitle"
               component="div"
             >
-              Facilities
+              Installments
             </Typography>
             <Tooltip title="add facility">
               <IconButton>
@@ -59,19 +64,17 @@ export default function CustomizedTables() {
             <Table sx={{minWidth: 700}} aria-label="customized table">
               <TableHead>
                 <TableRow>
-                  <TableCell>id</TableCell>
-                  <TableCell>customer number</TableCell>
-                  <TableCell>deposit number</TableCell>
-                  <TableCell>facility amount</TableCell>
+                  <TableCell>facility id</TableCell>
+                  <TableCell>loan number</TableCell>
+                  <TableCell>loan amount</TableCell>
                 </TableRow>
               </TableHead>
               <TableBody>
-                {facilities && facilities.map((facility:facilityType,index:number) => (
+                {installment && installment.map((installment:installmentType,index:number) => (
                   <TableRow key={index}>
-                    <TableCell align="left">{facility.id}</TableCell>
-                    <TableCell align="left">{facility.customerNumber}</TableCell>
-                    <TableCell align="left">{facility.depositNumber}</TableCell>
-                    <TableCell align="left">{facility.facilityAmount}</TableCell>
+                    <TableCell align="left">{installment.facilityId}</TableCell>
+                    <TableCell align="left">{installment.loanNumber}</TableCell>
+                    <TableCell align="left">{installment.loanAmount}</TableCell>
                   </TableRow>
                 ))}
               </TableBody>
@@ -79,7 +82,7 @@ export default function CustomizedTables() {
           </TableContainer>
         </Paper>
       </Box>
-      <FacilitiesModal openModal={open} closeModal={()=>{setOpen(false)}} handleSubmit={handleAddFacility} />
+      <InstallmentModal openModal={open} closeModal={()=>{setOpen(false)}} handleSubmit={handleAddFacility} />
     </>
   );
 }

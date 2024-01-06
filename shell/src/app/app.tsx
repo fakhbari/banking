@@ -43,6 +43,33 @@ export function App() {
     setOpen(!open);
   };
 
+  const handlers:{[key:string]:{(msg:any):void;}[] } = {};
+
+  (window as any).publish = (topic:string, message:object) => {
+    window.dispatchEvent(new CustomEvent('pubsub', {
+      detail: { topic, message },
+    }));
+  };
+
+  (window as any).subscribe = (topic:string, handler:(msg:any)=>void) => {
+    const topicHandlers = handlers[topic] || [];
+    topicHandlers.push(handler);
+    handlers[topic] = topicHandlers;
+  };
+
+  (window as any).unsubscribe = (topic:string, handler:(msg:any)=>void) => {
+    const topicHandlers = handlers[topic] || [];
+    const index = topicHandlers.indexOf(handler);
+    index >= 0 && topicHandlers.splice(index, 1);
+  };
+
+  window.addEventListener('pubsub', (ev:Event) => {
+    //@ts-ignore
+    const { topic, message } = ev.detail;
+    const topicHandlers = handlers[topic] || [];
+    topicHandlers.forEach(handler => handler(message));
+  });
+
   return (
     <DataProvider>
       <Box sx={{display: 'flex'}}>

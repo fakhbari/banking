@@ -241,6 +241,13 @@ export default function CustomerTable(props:{customers:customerType[],setCustome
   }
   return (
     <>
+      {/*sample of publishing an event*/}
+      {/*<button onClick={()=>{*/}
+      {/*  (window as any).publish('mife-a', {*/}
+      {/*    type: 'show_dialog',*/}
+      {/*    name: 'close_file'*/}
+      {/*  });*/}
+      {/*}}>click me </button>*/}
       <Box sx={{width: "100%"}}>
         <Paper sx={{width: "100%", mb: 2}}>
           <EnhancedTableToolbar

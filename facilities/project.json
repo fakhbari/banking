@@ -50,7 +50,7 @@
       "options": {
         "buildTarget": "facilities:build",
         "hmr": true,
-        "port": 4203
+        "port": 3003
       },
       "configurations": {
         "development": {

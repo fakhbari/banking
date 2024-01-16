@@ -12,5 +12,14 @@ const config = {
 export default composePlugins(
   withNx(),
   withReact(),
-  withModuleFederation(config)
+  withModuleFederation(config),
+  (config) => {
+    return {
+      ...config,
+      output: {
+        ...config.output,
+        scriptType: 'text/javascript',
+      },
+    };
+  },
 );

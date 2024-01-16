@@ -50,7 +50,7 @@
       "options": {
         "buildTarget": "deposit:build",
         "hmr": true,
-        "port": 4202
+        "port": 3002
       },
       "configurations": {
         "development": {

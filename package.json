@@ -50,6 +50,7 @@
   "dependencies": {
     "@emotion/react": "^11.11.1",
     "@emotion/styled": "^11.11.0",
+    "@module-federation/utilities": "^3.0.5",
     "@mui/icons-material": "^5.15.1",
     "@mui/material": "^5.15.1",
     "@swc/helpers": "~0.5.2",

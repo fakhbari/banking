@@ -1,4 +1,6 @@
+//@ts-noCheck
 import * as React from 'react';
+import { importRemote } from '@module-federation/utilities';
 import {Link as RouterLink, Route, Routes} from 'react-router-dom';
 import {
   Box,
@@ -25,10 +27,34 @@ import Copyright from "./CopyRight";
 
 import styles from "./app.module.css"
 
-const Customer = React.lazy(() => import('customer/Module'));
-const Deposit = React.lazy(() => import('deposit/Module'));
-const Facilities = React.lazy(() => import('facilities/Module'));
-const Installment = React.lazy(() => import('installment/Module'));
+const Customer = React.lazy(() => importRemote({
+  url:'http://localhost:3001',
+  scope:'customer',
+  module:'./Module',
+}).catch(() => {
+  return { default: () => <>Component unavailable!</> };
+}))
+const Deposit = React.lazy(() => importRemote({
+  url:'http://localhost:3002',
+  scope:'deposit',
+  module:'./Module',
+}).catch(() => {
+  return { default: () => <>Component unavailable!</> };
+}))
+const Facilities = React.lazy(() => importRemote({
+  url:'http://localhost:3003',
+  scope:'facilities',
+  module:'./Module',
+}).catch(() => {
+  return { default: () => <>Component unavailable!</> };
+}))
+const Installment = React.lazy(() => importRemote({
+  url:'http://localhost:3004',
+  scope:'installment',
+  module:'./Module',
+}).catch(() => {
+  return { default: () => <>Component unavailable!</> };
+}))
 
 export function App() {
   const [open, setOpen] = React.useState(true);

@@ -9,7 +9,6 @@ const sharedLibraries = new Set([
 
 const config: ModuleFederationConfig = {
   name: 'shell',
-  remotes: ['customer', 'deposit', 'facilities', 'installment'],
   shared: (libraryName, defaultConfig) => {
     if (sharedLibraries.has(libraryName)) {
       return defaultConfig;

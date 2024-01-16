@@ -4,7 +4,7 @@ const sharedLibraries = new Set(['react','react-dom','react-router-dom','@bankin
 
 const config: ModuleFederationConfig = {
   name: 'customer',
-
+  library: { type: "var", name: "customer" },
   exposes: {
     './Module': './src/remote-entry.ts',
   },

@@ -1,20 +1,32 @@
 {
-  "customers": [
+  "plugins": [
     {
-      "customerNumber":1,
-      "name":"fereshteh",
-      "family":"akhbari",
-      "nationalCode":"123456789"
+      "url": "http://localhost:3001",
+      "scope": "customer",
+      "module":"./Module",
+      "icon":"SupervisorAccountOutlined",
+      "title": "Customer"
     },
-    {"customerNumber":2,
-      "name":"zahra",
-      "family":"gholizade",
-      "nationalCode":"987654321"
+    {
+      "url": "http://localhost:3002",
+      "scope": "deposit",
+      "module":"./Module",
+      "icon":"AccountBalanceWalletOutlined",
+      "title": "Deposit"
     },
-    {"customerNumber":3,
-      "name":"arman",
-      "family":"taherian",
-      "nationalCode":"543219876"
+    {
+      "url": "http://localhost:3003",
+      "scope": "facilities",
+      "module":"./Module",
+      "icon":"AssignmentOutlined",
+      "title": "Facilities"
+    },
+    {
+      "url": "http://localhost:3004",
+      "scope": "installment",
+      "module":"./Module",
+      "icon":"AssignmentOutlined",
+      "title": "Installment"
     }
   ]
 }

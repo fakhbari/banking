@@ -26,44 +26,14 @@ import Dashboard from "./Dashboard";
 import Copyright from "./CopyRight";
 
 import styles from "./app.module.css"
+import axios from "axios";
 
-const Customer = React.lazy(() => importRemote({
-  url:'http://localhost:3001',
-  scope:'customer',
-  module:'./Module',
-}).catch(() => {
-  return { default: () => <>Component unavailable!</> };
-}))
-const Deposit = React.lazy(() => importRemote({
-  url:'http://localhost:3002',
-  scope:'deposit',
-  module:'./Module',
-}).catch(() => {
-  return { default: () => <>Component unavailable!</> };
-}))
-const Facilities = React.lazy(() => importRemote({
-  url:'http://localhost:3003',
-  scope:'facilities',
-  module:'./Module',
-}).catch(() => {
-  return { default: () => <>Component unavailable!</> };
-}))
-const Installment = React.lazy(() => importRemote({
-  url:'http://localhost:3004',
-  scope:'installment',
-  module:'./Module',
-}).catch(() => {
-  return { default: () => <>Component unavailable!</> };
-}))
 
 export function App() {
   const [open, setOpen] = React.useState(true);
-  const HomeIcon = Icons.HomeOutlined;
-  const CustomerIcon = Icons.SupervisorAccountOutlined;
-  const DepositIcon = Icons.AccountBalanceWalletOutlined;
-  const FacilitiesIcon = Icons.AssignmentOutlined;
   const MenuIcon = Icons.Menu;
   const ChevronLeftIcon = Icons.ChevronLeft;
+  const [plugins, setPlugins] = React.useState([{path:'/',component:Dashboard,icon: "HomeOutlined",title:"Home"}])
 
   const toggleDrawer = () => {
     setOpen(!open);
@@ -95,6 +65,36 @@ export function App() {
     const topicHandlers = handlers[topic] || [];
     topicHandlers.forEach(handler => handler(message));
   });
+
+
+  React.useEffect(()=>{
+    const getPlugins = ()=>{
+      axios.get('http://localhost:7000/plugins')
+        .then(resp => {
+          const receivedPlugin = resp.data;
+          const pluginsRoute = receivedPlugin && receivedPlugin.map(plugin =>{
+            return {
+              path:`/${plugin.scope}`,
+              component:React.lazy(() => importRemote({
+                url:plugin.url,
+                scope:plugin.scope,
+                module:plugin.module,
+              }).catch(() => {
+                return { default: () => <>Component unavailable!</> };
+              })),
+              icon:plugin.icon,
+              title:plugin.title
+            }
+          })
+          setPlugins([...plugins , ...pluginsRoute])
+        })
+        .catch(error => {
+          console.log(error);
+        });
+
+    }
+    getPlugins()
+  },[])
 
   return (
     <DataProvider>
@@ -145,46 +145,21 @@ export function App() {
           </Toolbar>
           <Divider/>
           <List component="nav">
-            <RouterLink to="/" className={styles.MenuLinks}>
-              <ListItemButton>
-                <ListItemIcon>
-                  <HomeIcon/>
-                </ListItemIcon>
-                <ListItemText primary="Home"/>
-              </ListItemButton>
-            </RouterLink>
-            <RouterLink to="/customer" className={styles.MenuLinks}>
-              <ListItemButton>
-                <ListItemIcon>
-                  <CustomerIcon/>
-                </ListItemIcon>
-                <ListItemText primary="Customer"/>
-              </ListItemButton>
-            </RouterLink>
-            <RouterLink to="/deposit" className={styles.MenuLinks}>
-              <ListItemButton>
-                <ListItemIcon>
-                  <DepositIcon/>
-                </ListItemIcon>
-                <ListItemText primary="Deposit"/>
-              </ListItemButton>
-            </RouterLink>
-            <RouterLink to="/facilities" className={styles.MenuLinks}>
-              <ListItemButton>
-                <ListItemIcon>
-                  <FacilitiesIcon/>
-                </ListItemIcon>
-                <ListItemText primary="Facilities"/>
-              </ListItemButton>
-            </RouterLink>
-            <RouterLink to="/installment" className={styles.MenuLinks}>
-              <ListItemButton>
-                <ListItemIcon>
-                  <FacilitiesIcon/>
-                </ListItemIcon>
-                <ListItemText primary="Installment"/>
-              </ListItemButton>
-            </RouterLink>
+            {
+              plugins.map(plugin =>{
+                const Icon = Icons[plugin.icon]
+                return(
+                  <RouterLink to={plugin.path} className={styles.MenuLinks}>
+                    <ListItemButton>
+                      <ListItemIcon>
+                        <Icon/>
+                      </ListItemIcon>
+                      <ListItemText primary={plugin.title}/>
+                    </ListItemButton>
+                  </RouterLink>
+                )
+              })
+            }
           </List>
         </Drawer>
         <Box
@@ -205,15 +180,10 @@ export function App() {
               <Paper className={styles.routesContainer} sx={{p: 2, display: 'flex', flexDirection: 'column'}}>
                 <React.Suspense fallback={null}>
                   <Routes>
-                    <Route path="/" element={<Dashboard />} />
-
-                    <Route path="/customer" element={<Customer />} />
-
-                    <Route path="/deposit" element={<Deposit />} />
-
-                    <Route path="/facilities" element={<Facilities />} />
-
-                    <Route path="/installment" element={<Installment />} />
+                    {plugins.map(plugin => {
+                      let ComponentTag:React.ElementType = plugin.component
+                      return <Route path={plugin.path} element={<ComponentTag />} />
+                    })}
                   </Routes>
                 </React.Suspense>
               </Paper>

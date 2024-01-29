@@ -25,8 +25,9 @@ import {Drawer} from "./Drawer";
 import Dashboard from "./Dashboard";
 import Copyright from "./CopyRight";
 
-import styles from "./app.module.css"
-import axios from "axios";
+import styles from "./app.module.css";
+import './events';
+import {getPluginsInManager} from './manager';
 
 
 export function App() {
@@ -39,61 +40,10 @@ export function App() {
     setOpen(!open);
   };
 
-  const handlers:{[key:string]:{(msg:any):void;}[] } = {};
-
-  (window as any).publish = (topic:string, message:object) => {
-    window.dispatchEvent(new CustomEvent('pubsub', {
-      detail: { topic, message },
-    }));
-  };
-
-  (window as any).subscribe = (topic:string, handler:(msg:any)=>void) => {
-    const topicHandlers = handlers[topic] || [];
-    topicHandlers.push(handler);
-    handlers[topic] = topicHandlers;
-  };
-
-  (window as any).unsubscribe = (topic:string, handler:(msg:any)=>void) => {
-    const topicHandlers = handlers[topic] || [];
-    const index = topicHandlers.indexOf(handler);
-    index >= 0 && topicHandlers.splice(index, 1);
-  };
-
-  window.addEventListener('pubsub', (ev:Event) => {
-    //@ts-ignore
-    const { topic, message } = ev.detail;
-    const topicHandlers = handlers[topic] || [];
-    topicHandlers.forEach(handler => handler(message));
-  });
-
-
   React.useEffect(()=>{
-    const getPlugins = ()=>{
-      axios.get('http://localhost:7000/plugins')
-        .then(resp => {
-          const receivedPlugin = resp.data;
-          const pluginsRoute = receivedPlugin && receivedPlugin.map(plugin =>{
-            return {
-              path:`/${plugin.scope}`,
-              component:React.lazy(() => importRemote({
-                url:plugin.url,
-                scope:plugin.scope,
-                module:plugin.module,
-              }).catch(() => {
-                return { default: () => <>Component unavailable!</> };
-              })),
-              icon:plugin.icon,
-              title:plugin.title
-            }
-          })
-          setPlugins([...plugins , ...pluginsRoute])
-        })
-        .catch(error => {
-          console.log(error);
-        });
-
-    }
-    getPlugins()
+    getPluginsInManager().then(res=>{
+      setPlugins([...plugins, ...res])
+    })
   },[])
 
   return (

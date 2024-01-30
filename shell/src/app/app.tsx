@@ -26,7 +26,6 @@ import Dashboard from "./Dashboard";
 import Copyright from "./CopyRight";
 
 import styles from "./app.module.css";
-import './events';
 import {getPluginsInManager} from './manager';
 
 

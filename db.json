@@ -28,7 +28,7 @@
       "scope": "installment",
       "module":"./Module",
       "icon":"AssignmentOutlined",
-      "title": "installment"
+      "title": "Installment"
     }
   ]
 }

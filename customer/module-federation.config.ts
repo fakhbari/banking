@@ -7,6 +7,7 @@ const config: ModuleFederationConfig = {
   library: { type: "var", name: "customer" },
   exposes: {
     './Module': './src/remote-entry.ts',
+    './Services':'./src/services.js'
   },
   shared:(libraryName,defaultConfig)=>{
     if (sharedLibraries.has(libraryName)) {

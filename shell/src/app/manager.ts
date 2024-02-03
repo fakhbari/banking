@@ -7,21 +7,30 @@ export const getPluginsInManager = ()=>{
   return axios.get('http://localhost:7000/plugins')
     .then(resp => {
       const receivedPlugin = resp.data;
-      const pluginsRoute = receivedPlugin && receivedPlugin.map(plugin =>{
+      const pluginsRoute = receivedPlugin && receivedPlugin.map(async plugin => {
         return {
-          path:`/${plugin.scope}`,
-          component:React.lazy(() => importRemote({
-              url:plugin.url,
-              scope:plugin.scope,
-              module:plugin.module,
+          path: `/${plugin.scope}`,
+          component: React.lazy(() => importRemote({
+            url: plugin.url,
+            scope: plugin.scope,
+            module: plugin.module,
+          }).catch(() => {
+            return {default: () => 'module is not working!'};
+          })),
+          services:plugin.services
+            ? await importRemote({
+              url: plugin.url,
+              scope: plugin.scope,
+              module: plugin.service,
             }).catch(() => {
-              return { default: () => 'module is not working!' };
-              })),
-            icon:plugin.icon,
-          title:plugin.title
-      }
+              return 'no service found';
+            })
+            : null,
+          icon: plugin.icon,
+          title: plugin.title
+        }
       })
-      return pluginsRoute
+      return Promise.all(pluginsRoute)
     })
     .catch(error => {
       console.log(error);

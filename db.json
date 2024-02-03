@@ -4,29 +4,31 @@
       "url": "http://localhost:3001",
       "scope": "customer",
       "module":"./Module",
+      "service": "./Services",
       "icon":"SupervisorAccountOutlined",
-      "title": "Customer"
+      "title": "customer",
+      "services": []
     },
     {
       "url": "http://localhost:3002",
       "scope": "deposit",
       "module":"./Module",
       "icon":"AccountBalanceWalletOutlined",
-      "title": "Deposit"
+      "title": "deposit"
     },
     {
       "url": "http://localhost:3003",
       "scope": "facilities",
       "module":"./Module",
       "icon":"AssignmentOutlined",
-      "title": "Facilities"
+      "title": "facilities"
     },
     {
       "url": "http://localhost:3004",
       "scope": "installment",
       "module":"./Module",
       "icon":"AssignmentOutlined",
-      "title": "Installment"
+      "title": "installment"
     }
   ]
 }

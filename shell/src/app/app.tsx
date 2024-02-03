@@ -34,19 +34,25 @@ export function App() {
   const MenuIcon = Icons.Menu;
   const ChevronLeftIcon = Icons.ChevronLeft;
   const [plugins, setPlugins] = React.useState([{path:'/',component:Dashboard,icon: "HomeOutlined",title:"Home"}])
+  const [services , setServices] = React.useState<{plugin:string,servicesList:object}[]>([])
 
   const toggleDrawer = () => {
     setOpen(!open);
   };
 
   React.useEffect(()=>{
-    getPluginsInManager().then(res=>{
-      setPlugins([...plugins, ...res])
+    getPluginsInManager().then(receivedPlugins=>{
+      setPlugins([...plugins, ...receivedPlugins])
+      receivedPlugins.forEach(plugin =>{
+        if(plugin.services !== null){
+          setServices([...services , {plugin:plugin.title , servicesList:plugin.services}])
+        }
+      })
     })
   },[])
-
   return (
     <DataProvider>
+      {/*<button onClick={()=>{services[0].servicesList.sayHello()}}>click me</button>*/}
       <Box sx={{display: 'flex'}}>
         <CssBaseline/>
         <AppBar position="absolute" open={open}>

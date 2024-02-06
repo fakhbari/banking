@@ -3,6 +3,12 @@ import axios from "axios";
 import * as React from "react";
 import {importRemote} from "@module-federation/utilities";
 
+declare global {
+  interface Window {
+    services:{pluginName:string , serviceList:{[index: string]:()=>void}}[]
+  }
+}
+
 export const getPluginsInManager = ()=>{
   return axios.get('http://localhost:7000/plugins')
     .then(resp => {
@@ -32,9 +38,9 @@ export const getPluginsInManager = ()=>{
       })
       return Promise.all(pluginsRoute)
     }).then(pluginList =>{
-      (window as any).services = []
+      window.services = []
       pluginList.forEach(plugin=>{
-        (window as any).services.push({pluginName:plugin.title , serviceList:plugin.services})
+        window.services.push({pluginName:plugin.title , serviceList:plugin.services})
       })
       return pluginList;
     })

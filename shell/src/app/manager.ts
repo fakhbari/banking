@@ -17,7 +17,7 @@ export const getPluginsInManager = ()=>{
           }).catch(() => {
             return {default: () => 'module is not working!'};
           })),
-          services:plugin.services
+          services:plugin.service
             ? await importRemote({
               url: plugin.url,
               scope: plugin.scope,
@@ -31,6 +31,12 @@ export const getPluginsInManager = ()=>{
         }
       })
       return Promise.all(pluginsRoute)
+    }).then(pluginList =>{
+      (window as any).services = []
+      pluginList.forEach(plugin=>{
+        (window as any).services.push({pluginName:plugin.title , serviceList:plugin.services})
+      })
+      return pluginList;
     })
     .catch(error => {
       console.log(error);

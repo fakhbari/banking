@@ -9,11 +9,15 @@ const sharedLibraries = new Set([
 
 const config: ModuleFederationConfig = {
   name: 'shell',
+  library: { type: "var", name: "shell" },
   shared: (libraryName, defaultConfig) => {
     if (sharedLibraries.has(libraryName)) {
       return defaultConfig;
     }
     return false;
+  },
+  exposes: {
+    './Services':'./src/app/services.ts'
   },
 };
 

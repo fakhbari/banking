@@ -1,6 +1,5 @@
 //@ts-noCheck
 import * as React from 'react';
-import { importRemote } from '@module-federation/utilities';
 import {Link as RouterLink, Route, Routes} from 'react-router-dom';
 import {
   Box,
@@ -26,7 +25,8 @@ import Dashboard from "./Dashboard";
 import Copyright from "./CopyRight";
 
 import styles from "./app.module.css";
-import {getPluginsInManager} from './manager';
+import { getPluginsInManager } from './manager';
+import {callServiceOfPlugin} from './services';
 
 
 export function App() {
@@ -34,7 +34,6 @@ export function App() {
   const MenuIcon = Icons.Menu;
   const ChevronLeftIcon = Icons.ChevronLeft;
   const [plugins, setPlugins] = React.useState([{path:'/',component:Dashboard,icon: "HomeOutlined",title:"Home"}])
-  const [services , setServices] = React.useState<{plugin:string,servicesList:object}[]>([])
 
   const toggleDrawer = () => {
     setOpen(!open);
@@ -43,16 +42,11 @@ export function App() {
   React.useEffect(()=>{
     getPluginsInManager().then(receivedPlugins=>{
       setPlugins([...plugins, ...receivedPlugins])
-      receivedPlugins.forEach(plugin =>{
-        if(plugin.services !== null){
-          setServices([...services , {plugin:plugin.title , servicesList:plugin.services}])
-        }
-      })
     })
   },[])
   return (
     <DataProvider>
-      {/*<button onClick={()=>{services[0].servicesList.sayHello()}}>click me</button>*/}
+      <button onClick={()=>{callServiceOfPlugin("customer","sayHello")}}>click me</button>
       <Box sx={{display: 'flex'}}>
         <CssBaseline/>
         <AppBar position="absolute" open={open}>
@@ -136,7 +130,7 @@ export function App() {
                 <React.Suspense fallback={null}>
                   <Routes>
                     {plugins.map(plugin => {
-                      let ComponentTag:React.ElementType = plugin.component
+                      const ComponentTag:React.ElementType = plugin.component
                       return <Route path={plugin.path} element={<ComponentTag />} />
                     })}
                   </Routes>

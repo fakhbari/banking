@@ -6,8 +6,7 @@
       "module":"./Module",
       "service": "./Services",
       "icon":"SupervisorAccountOutlined",
-      "title": "customer",
-      "services": []
+      "title": "customer"
     },
     {
       "url": "http://localhost:3002",

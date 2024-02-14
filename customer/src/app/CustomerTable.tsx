@@ -18,6 +18,7 @@ import {
 } from "@mui/material";
 import CustomerModal, {formData, modalData} from "./Modal";
 import {useState} from "react";
+import axios from 'axios';
 
 interface customerType {
   customerNumber: number,
@@ -223,6 +224,7 @@ export default function CustomerTable(props:{customers:customerType[],setCustome
       customerNumber:Math.floor(Math.random() * 1000) + 1
     }
     props.setCustomers([...props.customers,newCustomer])
+    axios.post('http://localhost:7000/customers',newCustomer)
   }
   const submitModalEditHandler = (customerNumber:number,formData:formData)=>{
     const updatedCustomers = props.customers.map(customer =>{

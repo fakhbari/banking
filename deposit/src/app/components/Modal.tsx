@@ -12,8 +12,8 @@ import {
   InputLabel
 } from "@mui/material";
 import styles from './Modal.module.css';
-import {useContext, useEffect} from "react";
-import {DataContext} from "@banking/data-context";
+import { importRemote } from '@module-federation/utilities';
+import { AxiosResponse } from 'axios';
 
 interface IProps{
   openModal:boolean;
@@ -32,7 +32,8 @@ export default function DepositModal(props:IProps) {
   const [open, setOpen] = React.useState(false);
   const [customerNumber, setCustomerNumber] = React.useState('');
   const [amount , setAmount] = React.useState('')
-  const {customers } = useContext(DataContext)
+  const [shellServices,setShellServices] = React.useState<{callServiceOfPlugin:(customer:string , service:string)=>any}>();
+  const [customers , setCustomers] = React.useState([])
 
   const handleOpen = () => setOpen(true);
   const handleClose = () => {
@@ -43,12 +44,26 @@ export default function DepositModal(props:IProps) {
     setCustomerNumber(event.target.value as string);
   };
 
-  useEffect(()=>{
+  React.useEffect(()=>{
+      shellServices && shellServices.callServiceOfPlugin("customer","getCustomers").then((res:AxiosResponse)=>{
+        setCustomers(res.data)
+      })
+
     if(props.openModal){
       handleOpen()
     }else {
       setOpen(false)
     }
+    importRemote({
+      url:'http://localhost:4200',
+      scope:'shell',
+      module:'./Services'
+    })
+      .then((module:any) =>{
+        setShellServices(module)
+      })
+
+
   },[props])
 
   const onSubmitData = () =>{

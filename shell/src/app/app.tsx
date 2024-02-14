@@ -26,7 +26,7 @@ import Copyright from "./CopyRight";
 
 import styles from "./app.module.css";
 import { getPluginsInManager } from './manager';
-import {callServiceOfPlugin} from './services';
+// import {callServiceOfPlugin} from './services';
 
 
 export function App() {
@@ -46,7 +46,7 @@ export function App() {
   },[])
   return (
     <DataProvider>
-      <button onClick={()=>{callServiceOfPlugin("customer","sayHello")}}>click me</button>
+      {/*<button onClick={()=>{callServiceOfPlugin("customer","sayHello")}}>click me</button>*/}
       <Box sx={{display: 'flex'}}>
         <CssBaseline/>
         <AppBar position="absolute" open={open}>

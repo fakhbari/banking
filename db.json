@@ -6,7 +6,7 @@
       "module": "./Module",
       "service": "./Services",
       "icon": "SupervisorAccountOutlined",
-      "title": "customer",
+      "title": "مشتریان",
       "id": "d6a8"
     },
     {
@@ -14,7 +14,7 @@
       "scope": "deposit",
       "module": "./Module",
       "icon": "AccountBalanceWalletOutlined",
-      "title": "deposit",
+      "title": "سپرده",
       "id": "d8e4"
     },
     {
@@ -22,16 +22,8 @@
       "scope": "facilities",
       "module": "./Module",
       "icon": "AssignmentOutlined",
-      "title": "facilities",
+      "title": "تسهیلات",
       "id": "1d52"
-    },
-    {
-      "url": "http://localhost:3004",
-      "scope": "installment",
-      "module": "./Module",
-      "icon": "AssignmentOutlined",
-      "title": "Installment",
-      "id": "11b6"
     }
   ],
   "customers": [

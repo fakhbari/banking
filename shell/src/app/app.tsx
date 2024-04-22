@@ -15,6 +15,7 @@ import {
   ListItemText,
   ListItemIcon,
   CssBaseline,
+  CircularProgress,
 } from '@mui/material';
 import * as Icons from '@mui/icons-material';
 import {DataProvider} from "@banking/data-context";
@@ -22,7 +23,6 @@ import {DataProvider} from "@banking/data-context";
 import {AppBar} from "./Appbar";
 import {Drawer} from "./Drawer";
 import Dashboard from "./Dashboard";
-import Copyright from "./CopyRight";
 
 import styles from "./app.module.css";
 import { getPluginsInManager } from './manager';
@@ -33,7 +33,7 @@ export function App() {
   const [open, setOpen] = React.useState(true);
   const MenuIcon = Icons.Menu;
   const ChevronLeftIcon = Icons.ChevronLeft;
-  const [plugins, setPlugins] = React.useState([{path:'/',component:Dashboard,icon: "HomeOutlined",title:"Home"}])
+  const [plugins, setPlugins] = React.useState([{path:'/',component:Dashboard,icon: "HomeOutlined",title:"داشبورد"}])
 
   const toggleDrawer = () => {
     setOpen(!open);
@@ -74,8 +74,9 @@ export function App() {
               color="inherit"
               noWrap
               sx={{flexGrow: 1}}
+              className={styles.headerText}
             >
-              Banking
+              پروژه بانکداری متمرکز
             </Typography>
           </Toolbar>
         </AppBar>
@@ -98,12 +99,12 @@ export function App() {
               plugins.map(plugin =>{
                 const Icon = Icons[plugin.icon]
                 return(
-                  <RouterLink to={plugin.path} className={styles.MenuLinks}>
-                    <ListItemButton>
+                  <RouterLink to={plugin.path} className={styles.MenuLinks} >
+                    <ListItemButton >
                       <ListItemIcon>
                         <Icon/>
                       </ListItemIcon>
-                      <ListItemText primary={plugin.title}/>
+                      <ListItemText primary={plugin.title} className={styles.menuItemText}/>
                     </ListItemButton>
                   </RouterLink>
                 )
@@ -124,10 +125,10 @@ export function App() {
           }}
         >
           <Toolbar/>
-          <Container maxWidth="lg" sx={{mt: 4, mb: 4}}>
+          <Container maxWidth="lg" sx={{mt: 3, mb: 4,mr:0}}>
             <Grid item xs={12}>
               <Paper className={styles.routesContainer} sx={{p: 2, display: 'flex', flexDirection: 'column'}}>
-                <React.Suspense fallback={null}>
+                <React.Suspense fallback={<CircularProgress size='3rem' className={styles.loadingStyle}/>}>
                   <Routes>
                     {plugins.map(plugin => {
                       const ComponentTag:React.ElementType = plugin.component
@@ -137,7 +138,7 @@ export function App() {
                 </React.Suspense>
               </Paper>
             </Grid>
-            <Copyright sx={{pt: 4}}/>
+            {/*<Copyright sx={{pt: 4}}/>*/}
           </Container>
         </Box>
       </Box>

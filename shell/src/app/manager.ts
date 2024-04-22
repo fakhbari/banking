@@ -21,7 +21,7 @@ export const getPluginsInManager = ()=>{
             scope: plugin.scope,
             module: plugin.module,
           }).catch(() => {
-            return {default: () => 'module is not working!'};
+            return {default: () => 'ماژول مورد نظر در دسترس نیست'};
           })),
           services:plugin.service
             ? await importRemote({
@@ -29,7 +29,7 @@ export const getPluginsInManager = ()=>{
               scope: plugin.scope,
               module: plugin.service,
             }).catch(() => {
-              return 'no service found';
+              return 'سرویسی یافت نشد';
             })
             : null,
           icon: plugin.icon,

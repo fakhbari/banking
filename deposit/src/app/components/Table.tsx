@@ -40,7 +40,7 @@ export default function CustomizedTables() {
 
   return (
     <>
-      <Box sx={{width: "100%"}}>
+      <Box sx={{width: "100%",direction:"rtl"}}>
         <Paper sx={{width: "100%", mb: 2}}>
           <Toolbar sx={{pl: {sm: 2}, pr: {xs: 1, sm: 1},}} className={styles.tableToolbar}>
             <Typography
@@ -49,9 +49,9 @@ export default function CustomizedTables() {
               id="tableTitle"
               component="div"
             >
-              Deposits
+              سپرده
             </Typography>
-            <Tooltip title="add deposit">
+            <Tooltip title="اضافه کردن سپرده جدید">
               <IconButton>
                 <AddIcon onClick={()=>{setOpen(true)}}/>
               </IconButton>
@@ -61,17 +61,17 @@ export default function CustomizedTables() {
             <Table sx={{minWidth: 700}} aria-label="customized table">
               <TableHead>
                 <TableRow>
-                  <TableCell>deposit number</TableCell>
-                  <TableCell>customer number</TableCell>
-                  <TableCell>amount</TableCell>
+                  <TableCell align={'right'}>شماره سپرده</TableCell>
+                  <TableCell align={'right'}>شماره مشتری</TableCell>
+                  <TableCell align={'right'}>مقدار</TableCell>
                 </TableRow>
               </TableHead>
               <TableBody>
                 {deposits.map((deposit:depositType) => (
                   <TableRow key={deposit.depositNumber}>
-                    <TableCell align="left">{deposit.depositNumber}</TableCell>
-                    <TableCell align="left">{deposit.customerNumber}</TableCell>
-                    <TableCell align="left">{deposit.amount}</TableCell>
+                    <TableCell align="right">{deposit.depositNumber}</TableCell>
+                    <TableCell align="right">{deposit.customerNumber}</TableCell>
+                    <TableCell align="right">{deposit.amount}</TableCell>
                   </TableRow>
                 ))}
               </TableBody>

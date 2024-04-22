@@ -45,9 +45,6 @@ export default function DepositModal(props:IProps) {
   };
 
   React.useEffect(()=>{
-      shellServices && shellServices.callServiceOfPlugin("customer","getCustomers").then((res:AxiosResponse)=>{
-        setCustomers(res.data)
-      })
 
     if(props.openModal){
       handleOpen()
@@ -61,7 +58,11 @@ export default function DepositModal(props:IProps) {
     })
       .then((module:any) =>{
         setShellServices(module)
-      })
+      }).then(res=>{
+          shellServices && shellServices.callServiceOfPlugin("customer","getCustomers").then((res:AxiosResponse)=>{
+          setCustomers(res.data)
+        })
+    })
 
 
   },[props])
@@ -81,13 +82,13 @@ export default function DepositModal(props:IProps) {
       aria-describedby="modal-modal-description"
     >
       <Box className={styles.modalContainer}>
-        <Typography className={styles['m-b-10']}> Deposit Information : </Typography>
+        <Typography className={styles['m-b-10']}> مشخصات سپرده </Typography>
         <FormControl fullWidth margin="dense" size="small">
           <InputLabel id="customerNumber">Customer Number</InputLabel>
           <Select
             id="customerNumber"
             value={customerNumber}
-            label="Customer Number"
+            label="شماره مشتری"
             onChange={handleChange}
             fullWidth={true}
           >
@@ -99,10 +100,11 @@ export default function DepositModal(props:IProps) {
         <TextField
           required
           id="amount"
-          label="Amount"
+          label="مقدار"
           size="small"
           margin="dense"
           value={amount}
+          fullWidth={true}
           onChange={(event)=>{setAmount(event.target.value)}}
         />
         <Button variant="contained" fullWidth={true} onClick={onSubmitData}>Submit</Button>

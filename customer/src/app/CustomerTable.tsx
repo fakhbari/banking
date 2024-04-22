@@ -39,31 +39,31 @@ const headCells: readonly HeadCell[] = [
     id: "customerNumber",
     numeric: true,
     disablePadding: false,
-    label: "Customer Number",
+    label: "شماره مشتری",
   },
   {
     id: "name",
     numeric: false,
     disablePadding: true,
-    label: "Name",
+    label: "نام",
   },
   {
     id: "family",
     numeric: true,
     disablePadding: false,
-    label: "Family",
+    label: "نام خانوادگی",
   },
   {
     id: "nationalCode",
     numeric: true,
     disablePadding: false,
-    label: "national Code",
+    label: "کد ملی",
   },
   {
     id: "operation",
     numeric: true,
     disablePadding: false,
-    label: "Operation",
+    label: "عملیات",
   },
 ];
 
@@ -151,7 +151,7 @@ function EnhancedTableToolbar(props: EnhancedTableToolbarProps) {
             id="tableTitle"
             component="div"
           >
-            Customers
+            مشتریان
           </Typography>
         )}
         {numSelected > 0 ? (

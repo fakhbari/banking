@@ -1,14 +1,14 @@
 import React from 'react';
-import CustomerTable from "./CustomerTable";
-import {DataContext} from "@banking/data-context";
-import {useContext} from "react";
+import "./app.module.css";
+import {CustomerDataProvider} from './dataContext';
+import Container from './container';
+
 
 const Customer = () => {
-  const {customers , setCustomers} = useContext(DataContext)
   return (
-    <div>
-      { customers ? <CustomerTable customers={customers} setCustomers={setCustomers}/> : "no customer found ! "}
-    </div>
+    <CustomerDataProvider>
+      <Container />
+    </CustomerDataProvider>
   );
 };
 

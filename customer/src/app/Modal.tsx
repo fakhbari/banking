@@ -59,12 +59,12 @@ export default function CustomerModal(props:Iprops) {
       aria-labelledby="modal-modal-title"
       aria-describedby="modal-modal-description"
     >
-      <Box className={styles.modalContainer}>
-        <Typography className={styles['m-b-10']}> Customer Information : </Typography>
+      <Box className={styles.modalContainer} >
+        <Typography className={styles['m-b-10']}> مشخصات مشتری : </Typography>
         <TextField
           required
           id="name"
-          label="Name"
+          label="نام"
           size="small"
           margin="dense"
           value={name}
@@ -73,7 +73,7 @@ export default function CustomerModal(props:Iprops) {
         <TextField
           required
           id="family"
-          label="Family"
+          label="نام خانوادگی"
           size="small"
           margin="dense"
           value={family}
@@ -82,13 +82,13 @@ export default function CustomerModal(props:Iprops) {
         <TextField
           required
           id="nationalCode"
-          label="National Code"
+          label="کد ملی"
           size="small"
           margin="dense"
           value={nationalCode}
           onChange={(event)=>{setNationalCode(event.target.value)}}
         />
-        <Button variant="contained" fullWidth={true} onClick={onSubmitData}>Submit</Button>
+        <Button variant="contained" fullWidth={true} onClick={onSubmitData}>ثبت</Button>
       </Box>
     </Modal>
   );

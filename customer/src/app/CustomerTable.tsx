@@ -59,12 +59,12 @@ const headCells: readonly HeadCell[] = [
     disablePadding: false,
     label: "کد ملی",
   },
-  {
-    id: "operation",
-    numeric: true,
-    disablePadding: false,
-    label: "عملیات",
-  },
+  // {
+  //   id: "operation",
+  //   numeric: true,
+  //   disablePadding: false,
+  //   label: "عملیات",
+  // },
 ];
 
 interface EnhancedTableProps {
@@ -186,7 +186,7 @@ interface customersType {
 export default function CustomerTable(props:{customers:customerType[],setCustomers:(customers:customersType[])=>void}) {
   const [selected, setSelected] = React.useState<readonly number[]>([]);
   const [modal, setModal]=useState<{isOpen:boolean,data:modalData }>({isOpen:false,data:{name:'',family:'',nationalCode:'',onSubmit:()=>{}}})
-  let EditIcon = Icons.Edit;
+  // let EditIcon = Icons.Edit;
 
   const handleSelectAllClick = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.checked) {
@@ -226,16 +226,16 @@ export default function CustomerTable(props:{customers:customerType[],setCustome
     props.setCustomers([...props.customers,newCustomer])
     axios.post('http://localhost:7000/customers',newCustomer)
   }
-  const submitModalEditHandler = (customerNumber:number,formData:formData)=>{
-    const updatedCustomers = props.customers.map(customer =>{
-      if(customer.customerNumber == customerNumber){
-        return{customerNumber,...formData}
-      }else {
-        return customer
-      }
-    })
-    props.setCustomers(updatedCustomers)
-  }
+  // const submitModalEditHandler = (customerNumber:number,formData:formData)=>{
+  //   const updatedCustomers = props.customers.map(customer =>{
+  //     if(customer.customerNumber == customerNumber){
+  //       return{customerNumber,...formData}
+  //     }else {
+  //       return customer
+  //     }
+  //   })
+  //   props.setCustomers(updatedCustomers)
+  // }
   const handleDeleteItem= (customerNumbers:number[])=>{
     const updatedCustomers = props.customers.filter(customer =>!customerNumbers.includes(customer.customerNumber))
     props.setCustomers(updatedCustomers)
@@ -302,22 +302,22 @@ export default function CustomerTable(props:{customers:customerType[],setCustome
                       <TableCell align="center">{customer.name}</TableCell>
                       <TableCell align="center">{customer.family}</TableCell>
                       <TableCell align="center">{customer.nationalCode}</TableCell>
-                      <TableCell align="center">
-                        <EditIcon onClick={() => {
-                          setModal(
-                            {
-                              isOpen: true,
-                              data: {
-                                name:customer.name,
-                                family:customer.family,
-                                nationalCode:customer.nationalCode,
-                                onSubmit:(formData)=>{submitModalEditHandler(customer.customerNumber,formData)},
-                              }
-                            }
-                          )
-                        }
-                        }/>
-                      </TableCell>
+                      {/*<TableCell align="center">*/}
+                      {/*  <EditIcon onClick={() => {*/}
+                      {/*    setModal(*/}
+                      {/*      {*/}
+                      {/*        isOpen: true,*/}
+                      {/*        data: {*/}
+                      {/*          name:customer.name,*/}
+                      {/*          family:customer.family,*/}
+                      {/*          nationalCode:customer.nationalCode,*/}
+                      {/*          onSubmit:(formData)=>{submitModalEditHandler(customer.customerNumber,formData)},*/}
+                      {/*        }*/}
+                      {/*      }*/}
+                      {/*    )*/}
+                      {/*  }*/}
+                      {/*  }/>*/}
+                      {/*</TableCell>*/}
                     </TableRow>
                   );
                 })}

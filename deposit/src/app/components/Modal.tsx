@@ -62,6 +62,8 @@ export default function DepositModal(props:IProps) {
           shellServices && shellServices.callServiceOfPlugin("customer","getCustomers").then((res:AxiosResponse)=>{
           setCustomers(res.data)
         })
+    }).catch((err:any)=>{
+      console.log('error in getting service: ',err)
     })
 
 
@@ -84,7 +86,7 @@ export default function DepositModal(props:IProps) {
       <Box className={styles.modalContainer}>
         <Typography className={styles['m-b-10']}> مشخصات سپرده </Typography>
         <FormControl fullWidth margin="dense" size="small">
-          <InputLabel id="customerNumber">Customer Number</InputLabel>
+          <InputLabel id="customerNumber">شماره مشتری</InputLabel>
           <Select
             id="customerNumber"
             value={customerNumber}
@@ -107,7 +109,7 @@ export default function DepositModal(props:IProps) {
           fullWidth={true}
           onChange={(event)=>{setAmount(event.target.value)}}
         />
-        <Button variant="contained" fullWidth={true} onClick={onSubmitData}>Submit</Button>
+        <Button variant="contained" fullWidth={true} onClick={onSubmitData}>ثبت</Button>
       </Box>
     </Modal>
   );

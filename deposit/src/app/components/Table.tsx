@@ -40,7 +40,7 @@ export default function CustomizedTables() {
 
   return (
     <>
-      <Box sx={{width: "100%",direction:"rtl"}}>
+      <Box sx={{width: "100%"}} dir='rtl'>
         <Paper sx={{width: "100%", mb: 2}}>
           <Toolbar sx={{pl: {sm: 2}, pr: {xs: 1, sm: 1},}} className={styles.tableToolbar}>
             <Typography
@@ -58,20 +58,20 @@ export default function CustomizedTables() {
             </Tooltip>
           </Toolbar>
           <TableContainer component={Paper}>
-            <Table sx={{minWidth: 700}} aria-label="customized table">
+            <Table sx={{minWidth: 700}} aria-label="customized table" dir="rtl">
               <TableHead>
                 <TableRow>
-                  <TableCell align={'right'}>شماره سپرده</TableCell>
-                  <TableCell align={'right'}>شماره مشتری</TableCell>
-                  <TableCell align={'right'}>مقدار</TableCell>
+                  <TableCell>شماره سپرده</TableCell>
+                  <TableCell>شماره مشتری</TableCell>
+                  <TableCell>مقدار</TableCell>
                 </TableRow>
               </TableHead>
               <TableBody>
                 {deposits.map((deposit:depositType) => (
                   <TableRow key={deposit.depositNumber}>
-                    <TableCell align="right">{deposit.depositNumber}</TableCell>
-                    <TableCell align="right">{deposit.customerNumber}</TableCell>
-                    <TableCell align="right">{deposit.amount}</TableCell>
+                    <TableCell>{deposit.depositNumber}</TableCell>
+                    <TableCell>{deposit.customerNumber}</TableCell>
+                    <TableCell>{deposit.amount}</TableCell>
                   </TableRow>
                 ))}
               </TableBody>

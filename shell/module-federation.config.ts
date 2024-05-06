@@ -5,6 +5,10 @@ const sharedLibraries = new Set([
   'react-dom',
   'react-router-dom',
   '@banking/data-context',
+  '@emotion/cache',
+  'stylis',
+  '@emotion/react',
+  'stylis-plugin-rtl'
 ]);
 
 const config: ModuleFederationConfig = {

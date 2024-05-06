@@ -125,7 +125,7 @@ export function App() {
           }}
         >
           <Toolbar/>
-          <Container maxWidth="lg" sx={{mt: 3, mb: 4,mr:0}}>
+          <Container maxWidth="xl" sx={{mt: 3, mb: 4,mr:0}}>
             <Grid item xs={12}>
               <Paper className={styles.routesContainer} sx={{p: 2, display: 'flex', flexDirection: 'column'}}>
                 <React.Suspense fallback={<CircularProgress size='3rem' className={styles.loadingStyle}/>}>

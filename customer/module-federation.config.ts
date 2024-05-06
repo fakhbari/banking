@@ -1,6 +1,10 @@
 import { ModuleFederationConfig } from '@nx/webpack';
 
-const sharedLibraries = new Set(['react','react-dom','react-router-dom','@banking/data-context'])
+const sharedLibraries = new Set(['react','react-dom','react-router-dom','@banking/data-context',
+  '@emotion/cache',
+  'stylis',
+  '@emotion/react',
+  'stylis-plugin-rtl'])
 
 const config: ModuleFederationConfig = {
   name: 'customer',
